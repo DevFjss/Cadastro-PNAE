@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      /* Variáveis de tema claro (padrão) */
+      :root {
+        --bg-primary: #f4f6f8;
+        --bg-secondary: #ffffff;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --border-color: #ddd;
+        --preview-bg: #00bcd4;
+        --preview-text: #000000;
+        --preview-border: #00bcd4;
+        --info-bg: #e3f2fd;
+        --info-border: #1976d2;
+        --card-bg: #e8eaf6;
+        --button-primary: #0d47a1;
+        --button-primary-hover: #1565c0;
+        --button-success: #ff9800;
+        --button-success-hover: #f57c00;
+        --button-secondary: #757575;
+        --button-secondary-hover: #616161;
+        --theme-btn-bg: #fff3e0;
+        --success-color: #4caf50;
+        --error-color: #f44336;
+        --warning-color: #ff9800;
+        --shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      /* Tema escuro */
+      body.dark {
+        --bg-primary: #1a1a2e;
+        --bg-secondary: #16213e;
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0b0b0;
+        --border-color: #333;
+        --preview-bg: #0d1b2a;
+        --preview-text: #00e5ff;
+        --preview-border: #00bcd4;
+        --info-bg: #1b263b;
+        --info-border: #415a77;
+        --card-bg: #0f3460;
+        --button-primary: #1565c0;
+        --button-primary-hover: #1976d2;
+        --button-success: #f57c00;
+        --button-success-hover: #ff9800;
+        --button-secondary: #616161;
+        --button-secondary-hover: #757575;
+        --theme-btn-bg: #2c3e50;
+        --success-color: #66bb6a;
+        --error-color: #ef5350;
+        --warning-color: #ffa726;
+        --shadow: 0 2px 4px rgba(0,0,0,0.3);
+      }
+
+      * {
+        transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-primary);
+        padding: 20px;
+        margin: 0;
+        color: var(--text-primary);
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: var(--button-primary);
+        margin-bottom: 15px;
+        font-size: 1.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 13px;
+        transition: all 0.2s;
+        box-shadow: var(--shadow);
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      #buscarSheets {
+        background-color: var(--button-primary);
+        color: white;
+      }
+
+      #buscarSheets:hover {
+        background-color: var(--button-primary-hover);
+      }
+
+      #gerarTxt {
+        background-color: var(--button-success);
+        color: white;
+      }
+
+      #gerarTxt:hover {
+        background-color: var(--button-success-hover);
+      }
+
+      #limpar {
+        background-color: var(--button-secondary);
+        color: white;
+      }
+
+      #limpar:hover {
+        background-color: var(--button-secondary-hover);
+      }
+
+      #toggleTheme {
+        background-color: var(--theme-btn-bg);
+        color: var(--text-primary);
+        font-size: 18px;
+        padding: 8px 12px;
+      }
+
+      .info-card {
+        background-color: var(--card-bg);
+        padding: 10px 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-size: 12px;
+        border-left: 3px solid var(--button-primary);
+      }
+
+      #info {
+        margin-top: 12px;
+        background-color: var(--info-bg);
+        border-left: 4px solid var(--info-border);
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 15px;
+        white-space: pre-wrap;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        line-height: 1.4;
+      }
+
+      .info-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(0,0,0,0.05);
+        padding: 4px 10px;
+        border-radius: 16px;
+        font-size: 13px;
+      }
+
+      .info-divider {
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+
+      .error-badge {
+        background-color: var(--error-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .error-badge:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+      }
+
+      .success-badge {
+        background-color: var(--success-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      #preview {
+        background-color: var(--preview-bg);
+        color: var(--preview-text);
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-family: 'Courier New', 'Monaco', monospace;
+        font-size: 11px;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        border: 1px solid var(--preview-border);
+        max-height: 500px;
+        line-height: 1.4;
+      }
+
+      .loading {
+        display: inline-block;
+        color: var(--warning-color);
+      }
+
+      .success {
+        color: var(--success-color);
+        font-weight: bold;
+      }
+
+      .error {
+        color: var(--error-color);
+        font-weight: bold;
+      }
+
+      .error-detail-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bg-secondary);
+        border: 2px solid var(--error-color);
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 80%;
+        max-height: 80%;
+        overflow: auto;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      }
+
+      .error-detail-modal.active {
+        display: block;
+      }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+      }
+
+      .modal-overlay.active {
+        display: block;
+      }
+
+      .close-modal {
+        float: right;
+        cursor: pointer;
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--error-color);
+      }
+
+      .close-modal:hover {
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        📊 Gerador Cadastro PNAE
+        <div class="header-buttons">
+          <button id="toggleTheme" title="Alternar tema">🌓</button>
+        </div>
+      </h1>
+      
+      <div class="info-card">
+        📌 ID: 1d8nG418nJPMuPX4CLKO1we_PL15GG581rehpN3I_-Z0 | 📑 Base_Dados
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+        <button id="buscarSheets">🔍 Buscar</button>
+        <button id="gerarTxt">💾 Gerar TXT</button>
+        <button id="limpar">🗑️ Limpar</button>
+      </div>
+
+      <div id="info">
+        💡 Clique em "Buscar"
+      </div>
+      
+      <pre id="preview">Aguardando dados...</pre>
+    </div>
+
+    <!-- Modal para detalhes dos erros -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+    <div id="errorModal" class="error-detail-modal">
+      <span class="close-modal" onclick="closeErrorModal()">&times;</span>
+      <h3>📋 Detalhes dos Erros</h3>
+      <div id="errorDetails"></div>
+    </div>
+
+    <script>
+      let fullText = '';
+      let numeroRemessa = '000';
+      let errosList = [];
+
+      function closeErrorModal() {
+        document.getElementById('errorModal').classList.remove('active');
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+
+      function showErrorDetails() {
+        if (!errosList || errosList.length === 0) return;
+        
+        const errorDetailsDiv = document.getElementById('errorDetails');
+        let html = '<table style="width:100%; border-collapse: collapse;">';
+        html += '<tr style="background: var(--error-color); color: white;"><th style="padding:8px;">Linha</th><th style="padding:8px;">Tamanho</th><th style="padding:8px;">Status</th><th style="padding:8px;">Preview</th></tr>';
+        
+        errosList.forEach(erro => {
+          const status = erro.tamanhoCaracteres < 150 ? `Faltam ${150 - erro.tamanhoCaracteres} chars` : `Sobram ${erro.tamanhoCaracteres - 150} chars`;
+          html += `<tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding:8px; font-weight:bold;">${erro.numeroLinha}</td>
+            <td style="padding:8px;">${erro.tamanhoCaracteres}</td>
+            <td style="padding:8px; color: var(--error-color);">${status}</td>
+            <td style="padding:8px; font-family: monospace; font-size: 10px;">${erro.conteudo.substring(0, 80)}${erro.conteudo.length > 80 ? '...' : ''}</td>
+          </tr>`;
+        });
+        
+        html += '</table>';
+        errorDetailsDiv.innerHTML = html;
+        
+        document.getElementById('errorModal').classList.add('active');
+        document.getElementById('modalOverlay').classList.add('active');
+      }
+
+      // Tema claro/escuro
+      function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          document.body.classList.add('dark');
+        }
+      }
+
+      function toggleTheme() {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      }
+
+      // Buscar dados do Google Sheets
+      document.getElementById('buscarSheets').onclick = async () => {
+        const btn = document.getElementById('buscarSheets');
+        const infoDiv = document.getElementById('info');
+        const previewDiv = document.getElementById('preview');
+        
+        btn.disabled = true;
+        btn.textContent = '🔄...';
+        infoDiv.innerHTML = '<span class="loading">⏳ Carregando...</span>';
+        previewDiv.textContent = 'Carregando...';
+        
+        try {
+          google.script.run
+            .withSuccessHandler((result) => {
+              if (result.error) {
+                infoDiv.innerHTML = `<span class="error">❌ ${result.error}</span>`;
+                previewDiv.textContent = 'Erro ao carregar dados.';
+                fullText = '';
+                btn.disabled = false;
+                btn.textContent = '🔍 Buscar';
+                return;
+              }
+              
+              if (result.success) {
+                fullText = result.fullText;
+                numeroRemessa = result.numeroRemessa;
+                errosList = result.erros || [];
+                
+                previewDiv.textContent = result.preview;
+                
+                // INFO COMPACTA
+                let infoHtml = '';
+                
+                if (errosList.length === 0) {
+                  infoHtml = `
+                    <span class="success-badge">✅ SUCESSO</span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">📄 ${result.totalLinhas} linhas</span>
+                    <span class="info-item">✅ ${result.linhasValidas} válidas</span>
+                    <span class="info-item">🔢 Rem: ${result.numeroRemessa}</span>
+                    <span class="info-item">💾 ${(fullText.length / 1024).toFixed(2)} KB</span>
+                    <span class="success-badge">🎯 150/150 caracteres</span>
+                  `;
+                } else {
+                  infoHtml = `
+                    <span class="error-badge" onclick="showErrorDetails()">❌ ${errosList.length} ERRO(S)</span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">📄 ${result.totalLinhas} linhas</span>
+                    <span class="info-item">✅ ${result.linhasValidas} válidas</span>
+                    <span class="info-item">❌ ${result.linhasInvalidas} inválidas</span>
+                    <span class="info-item">🔢 Rem: ${result.numeroRemessa}</span>
+                    <span class="info-item">💾 ${(fullText.length / 1024).toFixed(2)} KB</span>
+                    <span class="error-badge" onclick="showErrorDetails()">📋 Ver detalhes</span>
+                  `;
+                }
+                
+                infoDiv.innerHTML = infoHtml;
+              }
+            })
+            .withFailureHandler((error) => {
+              infoDiv.innerHTML = `<span class="error">❌ Erro: ${error.message}</span>`;
+              previewDiv.textContent = 'Erro na comunicação.';
+              fullText = '';
+            })
+            .buscarDadosGoogleSheets();
+            
+        } catch (error) {
+          infoDiv.innerHTML = `<span class="error">❌ ${error.message}</span>`;
+          previewDiv.textContent = 'Erro ao executar.';
+          fullText = '';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '🔍 Buscar';
+        }
+      };
+
+      // Gerar arquivo TXT
+      document.getElementById('gerarTxt').onclick = () => {
+        if (!fullText) {
+          const infoDiv = document.getElementById('info');
+          infoDiv.innerHTML = '<span class="error">⚠️ Busque primeiro</span>';
+          setTimeout(() => {
+            if (infoDiv.innerHTML.includes('Busque primeiro')) {
+              infoDiv.innerHTML = '💡 Clique em "Buscar"';
+            }
+          }, 2000);
+          return;
+        }
+        
+        if (errosList.length > 0) {
+          const confirmar = confirm(`⚠️ ATENÇÃO! Existem ${errosList.length} linha(s) com erro de tamanho!\n\nDeseja gerar o arquivo mesmo assim?\n\nAs linhas com erro serão ajustadas automaticamente (cortadas ou completadas com espaços).`);
+          if (!confirmar) return;
+        }
+        
+        const nomeArquivo = `REM000${numeroRemessa}.txt`;
+        const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = nomeArquivo;
+        link.click();
+        
+        const infoDiv = document.getElementById('info');
+        const msgSalvo = document.createElement('span');
+        msgSalvo.className = 'success';
+        msgSalvo.innerHTML = ` ✅ ${nomeArquivo} salvo`;
+        infoDiv.appendChild(msgSalvo);
+        
+        setTimeout(() => {
+          msgSalvo.remove();
+        }, 3000);
+      };
+
+      // Limpar visualização
+      document.getElementById('limpar').onclick = () => {
+        document.getElementById('preview').textContent = 'Aguardando dados...';
+        document.getElementById('info').innerHTML = '💡 Clique em "Buscar"';
+        fullText = '';
+        numeroRemessa = '000';
+        errosList = [];
+        closeErrorModal();
+      };
+
+      // Alternar tema
+      document.getElementById('toggleTheme').onclick = () => {
+        toggleTheme();
+        const isDark = document.body.classList.contains('dark');
+        document.getElementById('toggleTheme').textContent = isDark ? '☀️' : '🌙';
+      };
+
+      // Fechar modal ao clicar no overlay
+      document.getElementById('modalOverlay').onclick = closeErrorModal;
+
+      // Inicializar tema
+      initTheme();
+      const isDark = document.body.classList.contains('dark');
+      document.getElementById('toggleTheme').textContent = isDark ? '☀️' : '🌙';
+    </script>
+  </body>
+</html>
